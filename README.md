@@ -1,95 +1,145 @@
 # my-first-agent
 
-A base ReAct agent built with Google's Agent Development Kit (ADK)
-Agent generated with [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) version `0.28.3`
+A hands-on learning repository for building AI agents with Google's Agent Development Kit (ADK).
 
-## Project Structure
+> **For Students**: This repository is designed for a 1-hour hands-on exercise to learn the basics of AI agents.
 
-This project is organized as follows:
+---
+
+## 🎯 Getting Started
+
+### **👉 Start Here: [ONE_HOUR_EXERCISE.md](ONE_HOUR_EXERCISE.md)**
+
+This is your main assignment! It will guide you through:
+1. Setting up and running your first agent
+2. Modifying agent behavior through prompt engineering
+3. Writing a custom tool function
+4. Testing and debugging
+
+**Time required**: 60 minutes
+
+---
+
+## 📁 Project Structure
 
 ```
 my-first-agent/
-├── app/                 # Core application code
-│   ├── agent.py         # Main agent logic
-│   ├── fast_api_app.py  # FastAPI Backend server
-│   └── app_utils/       # App utilities and helpers
-├── tests/               # Unit, integration, and load tests
-├── Makefile             # Makefile for common commands
-├── GEMINI.md            # AI-assisted development guide
-└── pyproject.toml       # Project dependencies and configuration
+├── app/
+│   ├── agent.py              # Main agent - YOU'LL EDIT THIS
+│   ├── custom_tools.py       # Tools library - YOU'LL ADD A FUNCTION HERE
+│   ├── agent_parallel.py     # Example: Multiple agents working together
+│   ├── agent_sequential.py   # Example: Multi-step pipeline
+│   └── agent_hierarchical.py # Example: Complex multi-level system
+├── ONE_HOUR_EXERCISE.md      # Your assignment (START HERE!)
+├── README.md                 # This file
+└── pyproject.toml            # Project dependencies
 ```
 
-> 💡 **Tip:** Use [Gemini CLI](https://github.com/google-gemini/gemini-cli) for AI-assisted development - project context is pre-configured in `GEMINI.md`.
+---
 
-## Requirements
+## ⚙️ Setup Instructions
 
-Before you begin, ensure you have:
-- **uv**: Python package manager (used for all dependency management in this project) - [Install](https://docs.astral.sh/uv/getting-started/installation/) ([add packages](https://docs.astral.sh/uv/concepts/dependencies/) with `uv add <package>`)
-- **Google Cloud SDK**: For GCP services - [Install](https://cloud.google.com/sdk/docs/install)
-- **make**: Build automation tool - [Install](https://www.gnu.org/software/make/) (pre-installed on most Unix-based systems)
+### Prerequisites
 
+You need these tools installed:
+- **uv** (Python package manager) - [Install here](https://docs.astral.sh/uv/getting-started/installation/)
+- **make** (build tool) - Pre-installed on Mac/Linux
 
-## Quick Start (Local Testing)
-
-Install required packages and launch the local development environment:
+### Installation
 
 ```bash
-make install && make playground
+# 1. Navigate to the project directory
+cd my-first-agent
+
+# 2. Install dependencies
+make install
+
+# 3. Run the agent playground
+make playground
 ```
-> **📊 Observability Note:** Agent telemetry (Cloud Trace) is always enabled. Prompt-response logging (GCS, BigQuery, Cloud Logging) is **disabled** locally, **enabled by default** in deployed environments (metadata only - no prompts/responses). See [Monitoring and Observability](#monitoring-and-observability) for details.
 
-## Commands
+The playground will open in your browser at `http://localhost:8080`
 
-| Command              | Description                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------- |
-| `make install`       | Install all required dependencies using uv                                                  |
-| `make playground`    | Launch local development environment with backend and frontend - leveraging `adk web` command.|
-| `make deploy`        | Deploy agent to Cloud Run (use `IAP=true` to enable Identity-Aware Proxy, `PORT=8080` to specify container port) |
-| `make local-backend` | Launch local development server with hot-reload |
-| `make test`          | Run unit and integration tests                                                              |
-| `make lint`          | Run code quality checks (codespell, ruff, mypy)                                             |
+---
 
-For full command options and usage, refer to the [Makefile](Makefile).
+## 🚀 Quick Commands
 
+| Command | What it does |
+|---------|--------------|
+| `make install` | Install all dependencies |
+| `make playground` | Start the agent in your browser |
+| `make test` | Run tests to verify your code works |
 
-## Usage
+**To stop the playground**: Press `Ctrl+C` in the terminal
 
-This template follows a "bring your own agent" approach - you focus on your business logic, and the template handles everything else (UI, infrastructure, deployment, monitoring).
-1. **Develop:** Edit your agent logic in `app/agent.py`.
-2. **Test:** Explore your agent functionality using the local playground with `make playground`. The playground automatically reloads your agent on code changes.
-3. **Enhance:** When ready for production, run `uvx agent-starter-pack enhance` to add CI/CD pipelines, Terraform infrastructure, and evaluation notebooks.
+---
 
-The project includes a `GEMINI.md` file that provides context for AI tools like Gemini CLI when asking questions about your template.
+## 🔄 Running Different Agent Examples
 
-
-## Deployment
-
-You can deploy your agent to a Dev Environment using the following command:
+After completing the main exercise, you can explore more complex examples:
 
 ```bash
-gcloud config set project <your-dev-project-id>
-make deploy
+# Run the parallel agent example (multiple experts)
+export ROOT_AGENT_MODULE=app.agent_parallel
+make playground
+
+# Run the sequential pipeline example
+export ROOT_AGENT_MODULE=app.agent_sequential
+make playground
+
+# Run the hierarchical system example
+export ROOT_AGENT_MODULE=app.agent_hierarchical
+make playground
+
+# Return to your modified agent
+export ROOT_AGENT_MODULE=app.agent
+make playground
 ```
 
+---
 
-When ready for production deployment with CI/CD pipelines and Terraform infrastructure, run `uvx agent-starter-pack enhance` to add these capabilities.
+## 📚 What You'll Learn
 
-## Monitoring and Observability
+By the end of the exercise, you'll understand:
 
-The application provides two levels of observability:
+✅ How AI agents differ from traditional ML models  
+✅ How to control agent behavior with prompts (instructions)  
+✅ How to give agents new capabilities with custom tools  
+✅ How to test and debug agent systems  
 
-**1. Agent Telemetry Events (Always Enabled)**
-- OpenTelemetry traces and spans exported to **Cloud Trace**
-- Tracks agent execution, latency, and system metrics
+---
 
-**2. Prompt-Response Logging (Configurable)**
-- GenAI instrumentation captures LLM interactions (tokens, model, timing)
-- Exported to **Google Cloud Storage** (JSONL), **BigQuery** (external tables), and **Cloud Logging** (dedicated bucket)
+## ❓ Getting Help
 
-| Environment | Prompt-Response Logging |
-|-------------|-------------------------|
-| **Local Development** (`make playground`) | ❌ Disabled by default |
+**Having issues?**
 
-**To enable locally:** Set `LOGS_BUCKET_NAME` and `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=NO_CONTENT`.
+1. **Check your setup**: Make sure `make install` completed successfully
+2. **Read error messages**: They usually tell you what's wrong
+3. **Ask your instructor**: That's what they're here for!
 
-See the [observability guide](https://googlecloudplatform.github.io/agent-starter-pack/guide/observability.html) for detailed instructions, example queries, and visualization options.
+**Common issues**:
+- "Module not found" → Make sure you're in the `my-first-agent` directory
+- "Port already in use" → Stop the playground with `Ctrl+C` first
+- Agent doesn't use your tool → Check the docstring and agent instruction
+
+---
+
+## 🎓 Next Steps
+
+After completing the 1-hour exercise:
+
+1. **Explore the example agents** in the `app/` directory
+2. **Read the code comments** - they explain how everything works
+3. **Experiment!** Try modifying the examples and see what happens
+4. **Build your own agent** for a problem you care about
+
+---
+
+## 📖 Additional Resources
+
+- [ADK Official Documentation](https://github.com/google/adk-python)
+- [Agent Starter Pack](https://github.com/GoogleCloudPlatform/agent-starter-pack)
+
+---
+
+**Ready to start?** Open [ONE_HOUR_EXERCISE.md](ONE_HOUR_EXERCISE.md) and let's build your first agent! 🤖

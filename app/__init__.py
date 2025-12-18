@@ -12,6 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .agent import app
+import importlib
+import os
+import sys
+
+# Default to the main agent if not specified
+module_name = os.getenv("ROOT_AGENT_MODULE", "app.agent")
+
+try:
+    module = importlib.import_module(module_name)
+    app = module.app
+except ImportError as e:
+    raise ImportError(f"Could not load agent module '{module_name}'. Please check ROOT_AGENT_MODULE env var. Error: {e}")
+except AttributeError:
+    raise AttributeError(f"Module '{module_name}' must define an 'app' object.")
 
 __all__ = ["app"]
